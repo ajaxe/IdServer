@@ -1,0 +1,98 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch IdSrv",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/src/ApogeeDev.IdentityServer/bin/Debug/netcoreapp2.2/ApogeeDev.IdentityServer.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/ApogeeDev.IdentityServer",
+            "stopAtEntry": false,
+            "internalConsoleOptions": "openOnSessionStart",
+            "launchBrowser": {
+                "enabled": true,
+                "args": "https://idsrv.apogee-dev.com:5001",
+                "windows": {
+                    "command": "cmd.exe",
+                    "args": "/C start https://idsrv.apogee-dev.com:5001"
+                },
+                "osx": {
+                    "command": "open"
+                },
+                "linux": {
+                    "command": "xdg-open"
+                }
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "ASPNETCORE_URLS": "https://idsrv.apogee-dev.com:5001"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/src/ApogeeDev.IdentityServer/Views"
+            }
+        },
+        {
+            "name": "Launch API Sample",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/samples/Api/bin/Debug/netcoreapp2.1/Api.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/samples/Api",
+            "stopAtEntry": false,
+            "internalConsoleOptions": "openOnSessionStart",
+            "launchBrowser": {
+                "enabled": true,
+                "args": "https://local.apogee-dev.com:5002",
+                "windows": {
+                    "command": "cmd.exe",
+                    "args": "/C start https://local.apogee-dev.com:5002"
+                },
+                "osx": {
+                    "command": "open"
+                },
+                "linux": {
+                    "command": "xdg-open"
+                }
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "ASPNETCORE_URLS": "https://local.apogee-dev.com:5002"
+            }
+        },
+        {
+            "name": "Launch MVC Sample",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/samples/MvcClient/bin/Debug/netcoreapp2.1/MvcClient.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/samples/MvcClient",
+            "stopAtEntry": false,
+            "internalConsoleOptions": "openOnSessionStart",
+            "launchBrowser": {
+                "enabled": true,
+                "args": "https://local.apogee-dev.com:5003",
+                "windows": {
+                    "command": "cmd.exe",
+                    "args": "/C start https://local.apogee-dev.com:5003"
+                },
+                "osx": {
+                    "command": "open"
+                },
+                "linux": {
+                    "command": "xdg-open"
+                }
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "ASPNETCORE_URLS": "https://local.apogee-dev.com:5003"
+            }
+        }
+    ]
+}

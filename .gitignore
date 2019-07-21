@@ -1,0 +1,9 @@
+.cache/
+
+wwwroot/
+node_modules/
+bin/
+obj/
+dist/
+
+secrets/
