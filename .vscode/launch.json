@@ -16,10 +16,10 @@
             "internalConsoleOptions": "openOnSessionStart",
             "launchBrowser": {
                 "enabled": true,
-                "args": "https://idsrv.apogee-dev.com:5001",
+                "args": "https://local-idsrv.apogee-dev.com:5001",
                 "windows": {
                     "command": "cmd.exe",
-                    "args": "/C start https://idsrv.apogee-dev.com:5001"
+                    "args": "/C start https://local-idsrv.apogee-dev.com:5001"
                 },
                 "osx": {
                     "command": "open"
@@ -30,7 +30,7 @@
             },
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development",
-                "ASPNETCORE_URLS": "https://idsrv.apogee-dev.com:5001"
+                "ASPNETCORE_URLS": "https://local-idsrv.apogee-dev.com:5001"
             },
             "sourceFileMap": {
                 "/Views": "${workspaceFolder}/src/ApogeeDev.IdentityServer/Views"

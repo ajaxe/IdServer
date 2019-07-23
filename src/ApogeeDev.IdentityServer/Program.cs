@@ -19,6 +19,21 @@ namespace ApogeeDev.IdentityServer
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+            .ConfigureAppConfiguration((hostingCtx, cfgBuilder) =>
+            {
+                var env = hostingCtx.HostingEnvironment;
+                cfgBuilder.SetBasePath(env.ContentRootPath)
+                    .AddJsonFile("appsettings.json", optional : true, reloadOnChange : true)
+                    .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional : true)
+                    .AddJsonFile($"./secrets/secrets.{env.EnvironmentName}.json", optional : true)
+                    .AddEnvironmentVariables();
+            })
+            .ConfigureLogging((hostingContext, logging) =>
+            {
+                logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
+                logging.AddConsole();
+                logging.AddDebug();
+            })
+            .UseStartup<Startup>();
     }
 }

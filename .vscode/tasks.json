@@ -4,19 +4,45 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build-dotnet",
+            "label": "build-idsrv",
             "command": "dotnet",
             "type": "process",
             "args": [
                 "build",
                 "${workspaceFolder}/src/ApogeeDev.IdentityServer/ApogeeDev.IdentityServer.csproj"
             ],
+            "problemMatcher": "$msCompile",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "build-sample-api",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/samples/Api/Api.csproj"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build-sample-mvc",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/samples/MvcClient/MvcClient.csproj"
+            ],
             "problemMatcher": "$msCompile"
         },
         {
             "label": "build",
             "dependsOn": [
-                "build-dotnet"
+                "build-idsrv",
+                "build-sample-api",
+                "build-sample-mvc"
             ],
             "problemMatcher": [
                 "$msCompile"
