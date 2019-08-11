@@ -9,7 +9,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/src/ApogeeDev.IdentityServer/ApogeeDev.IdentityServer.csproj"
+                "${workspaceFolder}/src/ApogeeDev.IdServer/ApogeeDev.IdServer.csproj"
             ],
             "problemMatcher": "$msCompile",
             "group": {
@@ -34,6 +34,16 @@
             "args": [
                 "build",
                 "${workspaceFolder}/samples/MvcClient/MvcClient.csproj"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build-config-updater",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/src/tools/ApogeeDev.ConfigDataUpdater/ApogeeDev.ConfigDataUpdater.csproj"
             ],
             "problemMatcher": "$msCompile"
         },

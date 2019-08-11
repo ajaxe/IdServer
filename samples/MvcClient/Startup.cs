@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MvcClient
 {
@@ -24,10 +26,22 @@ namespace MvcClient
                 {
                     options.SignInScheme = "Cookies";
 
-                    options.Authority = "http://localhost:5000";
+                    options.Authority = "http://localhost:5001";
                     options.RequireHttpsMetadata = false;
 
-                    options.ClientId = "mvc";
+                    options.Events.OnRedirectToIdentityProvider = (context) =>
+                    {
+                        context.Options.Prompt = "login";
+                        return Task.CompletedTask;
+                    };
+                    options.Events.OnUserInformationReceived = (context) =>
+                    {
+                        var p = context.Principal;
+                        var c = p.Claims.ToList();
+                        return Task.CompletedTask;
+                    };
+
+                    options.ClientId = "test_mvc.client";
                     options.ClientSecret = "secret";
                     options.ResponseType = "code id_token";
 
@@ -36,6 +50,7 @@ namespace MvcClient
 
                     options.Scope.Add("api1");
                     options.Scope.Add("offline_access");
+                    options.Scope.Add("profile");
 
                     options.ClaimActions.MapJsonKey("website", "website");
                 });

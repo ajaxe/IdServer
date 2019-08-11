@@ -1,7 +1,7 @@
 {
     // Use IntelliSense to learn about possible attributes.
     // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    // For more information, visit: http://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
         {
@@ -9,17 +9,17 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/src/ApogeeDev.IdentityServer/bin/Debug/netcoreapp2.2/ApogeeDev.IdentityServer.dll",
+            "program": "${workspaceFolder}/src/ApogeeDev.IdServer/bin/Debug/netcoreapp2.2/ApogeeDev.IdServer.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/src/ApogeeDev.IdentityServer",
+            "cwd": "${workspaceFolder}/src/ApogeeDev.IdServer",
             "stopAtEntry": false,
             "internalConsoleOptions": "openOnSessionStart",
             "launchBrowser": {
                 "enabled": true,
-                "args": "https://local-idsrv.apogee-dev.com:5001",
+                "args": "http://localhost:5001",
                 "windows": {
                     "command": "cmd.exe",
-                    "args": "/C start https://local-idsrv.apogee-dev.com:5001"
+                    "args": "/C start http://localhost:5001"
                 },
                 "osx": {
                     "command": "open"
@@ -30,10 +30,10 @@
             },
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development",
-                "ASPNETCORE_URLS": "https://local-idsrv.apogee-dev.com:5001"
+                "ASPNETCORE_URLS": "http://localhost:5001"
             },
             "sourceFileMap": {
-                "/Views": "${workspaceFolder}/src/ApogeeDev.IdentityServer/Views"
+                "/Views": "${workspaceFolder}/src/ApogeeDev.IdServer/Views"
             }
         },
         {
@@ -48,10 +48,10 @@
             "internalConsoleOptions": "openOnSessionStart",
             "launchBrowser": {
                 "enabled": true,
-                "args": "https://local.apogee-dev.com:5002",
+                "args": "http://localhost:5002",
                 "windows": {
                     "command": "cmd.exe",
-                    "args": "/C start https://local.apogee-dev.com:5002"
+                    "args": "/C start http://localhost:5002"
                 },
                 "osx": {
                     "command": "open"
@@ -62,7 +62,7 @@
             },
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development",
-                "ASPNETCORE_URLS": "https://local.apogee-dev.com:5002"
+                "ASPNETCORE_URLS": "http://localhost:5002"
             }
         },
         {
@@ -77,10 +77,10 @@
             "internalConsoleOptions": "openOnSessionStart",
             "launchBrowser": {
                 "enabled": true,
-                "args": "https://local.apogee-dev.com:5003",
+                "args": "http://localhost:5003",
                 "windows": {
                     "command": "cmd.exe",
-                    "args": "/C start https://local.apogee-dev.com:5003"
+                    "args": "/C start http://localhost:5003"
                 },
                 "osx": {
                     "command": "open"
@@ -91,8 +91,20 @@
             },
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development",
-                "ASPNETCORE_URLS": "https://local.apogee-dev.com:5003"
+                "ASPNETCORE_URLS": "http://localhost:5003"
             }
+        },
+        {
+            "name": "Launch Config updater",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-config-updater",
+            "program": "${workspaceFolder}/src/tools/ApogeeDev.ConfigDataUpdater/bin/Debug/netcoreapp2.2/ApogeeDev.ConfigDataUpdater.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/tools/ApogeeDev.ConfigDataUpdater",
+            "stopAtEntry": false,
+            "console": "internalConsole",
+            "internalConsoleOptions": "openOnSessionStart"
         }
     ]
 }

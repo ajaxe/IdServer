@@ -7,3 +7,5 @@ obj/
 dist/
 
 secrets/
+tempkey.rsa
+.vscode/solution-explorer
