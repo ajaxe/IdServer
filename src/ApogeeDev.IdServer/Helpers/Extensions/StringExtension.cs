@@ -1,3 +1,5 @@
+using System;
+
 namespace ApogeeDev.IdServer
 {
     public static class StringExtensions

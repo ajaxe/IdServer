@@ -30,42 +30,11 @@ namespace ApogeeDev.IdServer.ApplicationServices
         public async Task<ApplicationUser> AutoProvisionUserAsync(string provider, string providerUserId, IEnumerable<Claim> claims)
         {
             // create a list of claims that we want to transfer into our store
-            var filtered = new List<Claim>();
+            var filtered = claims.ToList();
 
-            // user's display name
-            var name = claims.FirstOrDefault(x => x.Type == JwtClaimTypes.Name)?.Value ??
-                claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
-            if (name != null)
-            {
-                filtered.Add(new Claim(JwtClaimTypes.Name, name));
-            }
-            else
-            {
-                var first = claims.FirstOrDefault(x => x.Type == JwtClaimTypes.GivenName)?.Value ??
-                    claims.FirstOrDefault(x => x.Type == ClaimTypes.GivenName)?.Value;
-                var last = claims.FirstOrDefault(x => x.Type == JwtClaimTypes.FamilyName)?.Value ??
-                    claims.FirstOrDefault(x => x.Type == ClaimTypes.Surname)?.Value;
-                if (first != null && last != null)
-                {
-                    filtered.Add(new Claim(JwtClaimTypes.Name, first + " " + last));
-                }
-                else if (first != null)
-                {
-                    filtered.Add(new Claim(JwtClaimTypes.Name, first));
-                }
-                else if (last != null)
-                {
-                    filtered.Add(new Claim(JwtClaimTypes.Name, last));
-                }
-            }
+            ProcessUserDisplayNameClaim(filtered);
 
-            // email
-            var email = claims.FirstOrDefault(x => x.Type == JwtClaimTypes.Email)?.Value ??
-               claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
-            if (email != null)
-            {
-                filtered.Add(new Claim(JwtClaimTypes.Email, email));
-            }
+            ProcessEmailClaim(filtered);
 
             var user = new ApplicationUser
             {
@@ -85,6 +54,7 @@ namespace ApogeeDev.IdServer.ApplicationServices
 
             return user;
         }
+
         public Task<ApplicationUser> FindByLoginAsync(string loginProvider, string providerKey)
         {
             return _userManager.FindByLoginAsync(loginProvider, providerKey);
@@ -104,5 +74,85 @@ namespace ApogeeDev.IdServer.ApplicationServices
             }
             return result.Succeeded;
         }
+
+        public async Task UpdateUserClaims(ApplicationUser user, IEnumerable<Claim> claims)
+        {
+            var incomingClaims = claims.ToList();
+            var userClaims = await _userManager.GetClaimsAsync(user);
+
+            var newClaims = incomingClaims.Except(userClaims, (c) => c.Type)
+                .ToList();
+
+            var result = await _userManager.AddClaimsAsync(user, newClaims);
+        }
+        private Claim ProcessUserDisplayNameClaim(List<Claim> claims)
+        {
+            Claim resultingClaim = null;
+            // user's display name
+            var nameClaim = claims.FirstOrDefault(x => x.Type == JwtClaimTypes.Name) ??
+                claims.FirstOrDefault(x => x.Type == ClaimTypes.Name);
+
+            string name = nameClaim?.Value;
+
+            if (name != null)
+            {
+                resultingClaim = new Claim(JwtClaimTypes.Name, name);
+                claims.Remove(nameClaim);
+            }
+            else
+            {
+
+                var firstNameClaim = claims.FirstOrDefault(x => x.Type == JwtClaimTypes.GivenName) ??
+                    claims.FirstOrDefault(x => x.Type == ClaimTypes.GivenName);
+                var lastNameClaim = claims.FirstOrDefault(x => x.Type == JwtClaimTypes.FamilyName) ??
+                    claims.FirstOrDefault(x => x.Type == ClaimTypes.Surname);
+
+                string first = firstNameClaim?.Value,
+                    last = lastNameClaim?.Value;
+
+                string claimValue = null;
+                if (first.IsNotNull() && last.IsNotNull())
+                {
+                    claimValue = $"{first} {last}";
+                }
+                else if (first.IsNotNull())
+                {
+                    claimValue = first;
+                }
+                else if (last.IsNotNull())
+                {
+                    claimValue = last;
+                }
+
+                resultingClaim = new Claim(JwtClaimTypes.Name, claimValue);
+
+                if (firstNameClaim.IsNotNull())
+                {
+                    claims.Remove(firstNameClaim);
+                }
+                if (last.IsNotNull())
+                {
+                    claims.Remove(lastNameClaim);
+                }
+            }
+            return resultingClaim;
+        }
+
+        private Claim ProcessEmailClaim(List<Claim> claims)
+        {
+            Claim resultingClaim = null;
+            var emailClaim = claims.FirstOrDefault(x => x.Type == JwtClaimTypes.Email) ??
+               claims.FirstOrDefault(x => x.Type == ClaimTypes.Email);
+
+            string email = emailClaim?.Value;
+
+            if (email != null)
+            {
+                resultingClaim = new Claim(JwtClaimTypes.Email, email);
+                claims.Remove(emailClaim);
+            }
+            return resultingClaim;
+        }
+
     }
 }

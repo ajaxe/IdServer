@@ -7,6 +7,7 @@ using ApogeeDev.IdServer.ApplicationServices.Abstractions;
 using ApogeeDev.IdServer.Core.Config;
 using ApogeeDev.IdServer.Core.Config.Default;
 using ApogeeDev.IdServer.Core.EntityModels;
+using ApogeeDev.IdServer.Helpers;
 using ApogeeDev.IdServer.Repositories;
 using IdentityServer4;
 using IdentityServer4.EntityFramework.DbContexts;
@@ -71,7 +72,7 @@ namespace ApogeeDev.IdServer
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            InitializeDatabase(app);
+            (new SeedDataHelper()).InitializeDatabase(app);
 
             if (env.IsDevelopment())
             {
@@ -139,43 +140,6 @@ namespace ApogeeDev.IdServer
                     mySqlOptions.ServerVersion(new Version(10, 3, 11), ServerType.MySql);
                     mySqlOptions.MigrationsAssembly(migrationsAssembly);
                 });
-
-        private void InitializeDatabase(IApplicationBuilder app)
-        {
-            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
-            {
-                serviceScope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
-
-                var context = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
-                context.Database.Migrate();
-                if (!context.Clients.Any())
-                {
-                    foreach (var client in ApplicationData.Clients)
-                    {
-                        context.Clients.Add(client.ToEntity());
-                    }
-                    context.SaveChanges();
-                }
-
-                if (!context.IdentityResources.Any())
-                {
-                    foreach (var resource in ApplicationData.Identities)
-                    {
-                        context.IdentityResources.Add(resource.ToEntity());
-                    }
-                    context.SaveChanges();
-                }
-
-                if (!context.ApiResources.Any())
-                {
-                    foreach (var resource in ApplicationData.Apis)
-                    {
-                        context.ApiResources.Add(resource.ToEntity());
-                    }
-                    context.SaveChanges();
-                }
-            }
-        }
 
         private void ConfigureGoogleOAuth(OpenIdConnectOptions oidcOptions)
         {

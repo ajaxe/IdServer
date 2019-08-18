@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication;
 using System.Net.Http;
 using Newtonsoft.Json.Linq;
 using System.Net.Http.Headers;
+using Newtonsoft.Json;
 
 namespace MvcClient.Controllers
 {
@@ -16,11 +17,11 @@ namespace MvcClient.Controllers
         }
 
         [Authorize]
-        public IActionResult Secure()
+        public async Task<IActionResult> Secure()
         {
             ViewData["Message"] = "Secure page.";
 
-            return View();
+            return await CallApi();
         }
 
         public IActionResult Logout()
@@ -41,8 +42,8 @@ namespace MvcClient.Controllers
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
             var content = await client.GetStringAsync("http://localhost:5002/identity");
 
-            ViewBag.Json = JArray.Parse(content).ToString();
-            return View("json");
+            ViewBag.Json = JArray.Parse(content).ToString(Formatting.Indented);
+            return View();
         }
     }
 }

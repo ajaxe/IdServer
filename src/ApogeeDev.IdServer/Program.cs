@@ -17,6 +17,11 @@ namespace ApogeeDev.IdServer
             CreateWebHostBuilder(args).Build().Run();
         }
 
+        private static void SetupSerilog()
+        {
+
+        }
+
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
             .ConfigureAppConfiguration((hostingCtx, cfgBuilder) =>
@@ -31,6 +36,7 @@ namespace ApogeeDev.IdServer
             .ConfigureLogging((hostingContext, logging) =>
             {
                 logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
+                logging.AddFile
                 logging.AddConsole();
                 logging.AddDebug();
             })

@@ -15,5 +15,7 @@ namespace ApogeeDev.IdServer.ApplicationServices.Abstractions
         Task<ClaimsPrincipal> CreateUserPrincipalAsync(ApplicationUser user);
 
         Task<bool> LoginUserAsync(LoginInputModel loginModel);
+
+        Task UpdateUserClaims(ApplicationUser user, IEnumerable<Claim> claims);
     }
 }

@@ -93,11 +93,15 @@ namespace ApogeeDev.IdServer.Controllers
                 // simply auto-provisions new external user
                 user = await _userService.AutoProvisionUserAsync(provider, providerUserId, claims);
             }
+            else
+            {
+                await _userService.UpdateUserClaims(user, claims);
+            }
 
             // this allows us to collect any additonal claims or properties
             // for the specific prtotocols used and store them in the local auth cookie.
             // this is typically used to store data needed for signout from those protocols.
-            var additionalLocalClaims = new List<Claim>();
+            var additionalLocalClaims = new List<Claim>(claims);
             var localSignInProps = new AuthenticationProperties();
 
             ProcessLoginCallbackForOidc(result, additionalLocalClaims, localSignInProps);
